@@ -1,0 +1,63 @@
+# depslib dependency file v1.0
+1565541973 source:d:\codeblocks\testingcurl\main.cpp
+	<stdio.h>
+	<curl/curl.h>
+	"functions.h"
+	<curl/curlbuild.h>
+	<utility>
+
+1415105476 c:\curl-7.39.0\include\curl\curl.h
+	"curlver.h"
+	"curlbuild.h"
+	"curlrules.h"
+	<stdio.h>
+	<limits.h>
+	<osreldate.h>
+	<sys/types.h>
+	<time.h>
+	<winsock2.h>
+	<ws2tcpip.h>
+	<sys/select.h>
+	<sys/socket.h>
+	<sys/time.h>
+	<support/SupportDefs.h>
+	"easy.h"
+	"multi.h"
+	"typecheck-gcc.h"
+
+1415172361 c:\curl-7.39.0\include\curl\curlver.h
+
+1415172361 c:\curl-7.39.0\include\curl\curlbuild.h
+	<sys/types.h>
+	<sys/socket.h>
+
+1415105476 c:\curl-7.39.0\include\curl\curlrules.h
+
+1402509149 c:\curl-7.39.0\include\curl\easy.h
+
+1415105476 c:\curl-7.39.0\include\curl\multi.h
+	"curl.h"
+
+1415105476 c:\curl-7.39.0\include\curl\typecheck-gcc.h
+
+1565549345 source:d:\codeblocks\testingcurl\functions.cpp
+	"functions.h"
+	<curl/curl.h>
+	<iostream>
+	<fstream>
+	<cstring>
+
+1565541027 d:\codeblocks\testingcurl\functions.h
+	<curl/curl.h>
+	<string.h>
+	<iostream>
+	<vector>
+	<utility>
+
+1565541908 source:d:\codeblocks\testingcurl\verify.cpp
+	"functions.h"
+	<string>
+	<iostream>
+	<vector>
+	<utility>
+
