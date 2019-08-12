@@ -1,20 +1,21 @@
 #include <stdio.h>
 #include <curl/curl.h>
 #include "functions.h"
-#include <curl/curlbuild.h>
 #include <utility>
 
 enum commandList {
         cmd_create,
         cmd_login,
         cmd_sendMessage,
+        cmd_getMessages,
         cmd_invalid
 };
 commandList hashIt(std::string const& cmd){
     if(cmd == "create") return cmd_create;
-    if(cmd == "login") return cmd_login;
-    if(cmd == "sendMessage") return cmd_sendMessage;
-    else return cmd_invalid;
+    if(cmd == "login")  return cmd_login;
+    if(cmd == "m")      return cmd_sendMessage;
+    if(cmd == "g")      return cmd_getMessages;
+    else                return cmd_invalid;
 }
 int main(void)
 {
@@ -38,19 +39,21 @@ int main(void)
                             printf("\nLogin Successful");
                         break;
     case cmd_sendMessage:
-                        res = sendMessage(tokens.first[1],tokens.first[2],tokens.first[3]);
+                        res = sendMessage(tokens.first[1],tokens.first[2]);
+                        if(res != CURLE_OK)
+                          fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+                        else
+                            printf("\nSuccessfully sent the message");
+                        break;
+    case cmd_getMessages:
+                        res = getMessages(tokens.first[1]);
                         if(res != CURLE_OK)
                           fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
                         else
                             printf("\nSuccessfully sent the message");
                         break;
     case cmd_invalid    :
-                        std::cout<<"Invalid command Entered"<<std::endl;
+                        printf("\nInvalid Command Entered");
+                        break;
     }
-    /*CURLcode res = sendMessage("ganesh","what is up fam","kumar");
-    if(res != CURLE_OK)
-      fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
-    else
-        printf("\nUnsuccessful");
-    return 0;*/
 }
