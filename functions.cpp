@@ -7,36 +7,38 @@
 std::string URL("http://localhost:3000/api/v1/");
 size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata){
     std::ofstream fout("token.bin",std::ios::binary);
-    std::string data(ptr);
-    std::cout<<"Token Recieved: "<<data<<std::endl;
-    fout.write(reinterpret_cast<char*>(&data),MAX*sizeof(char));
+    std::cout<<"Token Recieved: "<<ptr<<std::endl;
+    fout<<ptr<<std::endl;
     fout.close();
     return strlen(ptr);
+}
+
+std::string getToken(){
+    char token[200];
+    std::ifstream fin("token.bin",std::ios::binary);
+    fin.seekg(0,std::ios::end);
+    int n = fin.tellg();
+    fin.seekg(0,std::ios::beg);
+    fin.getline(token,n);
+    fin.close();
+    std::string token_string(token);
+    return token_string;
 }
 CURLcode sendMessage(std::string message,std::string reciever){
         printf("\nSendMessage route initiated");
         CURL *curl;
         curl = curl_easy_init();
         CURLcode result;
-        const char* path = "token.bin";
-        std::string header;
-        std::ifstream fin(path,std::ios::binary);
-        if(fin.is_open()){
-            printf("\n Token Files opened");
-            std::string token;
-            fin.read(reinterpret_cast<char*>(&token),MAX*sizeof(char));
-            fin.close();
-            printf("\nAvailable token: %s",token.c_str());
-            header = "Authorization: "+token;
-        } else {
-            perror(path);
-        }
+        std::string token = getToken();
+        std::string header = "Authorization: "+token;
+        std::cout<<header<<std::endl;
         struct curl_slist *chunk = NULL;
         chunk = curl_slist_append(chunk,header.c_str());
         std::string finalURL = URL + "sendMessage";
         std::string data = "reciever="+reciever+"&message="+message;
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
         curl_easy_setopt(curl, CURLOPT_URL, finalURL.c_str());
+        curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
         curl_easy_setopt(curl,CURLOPT_HTTPHEADER,chunk);
         result = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
@@ -80,10 +82,7 @@ CURLcode getMessages(std::string username){
     curl_slist *chunk = NULL;
     std::string finalURL = URL+"getMessages";
     std::string data = "username="+username;
-    std::string token;
-    std::ifstream fin("token.bin",std::ios::binary);
-    fin.read(reinterpret_cast<char*>(&token),MAX*sizeof(char));
-    fin.close();
+    std::string token = getToken();
     std::string header = "Authorization: "+token;
     chunk = curl_slist_append(chunk,header.c_str());
     curl_easy_setopt(curl,CURLOPT_URL,finalURL);curl_easy_setopt(curl,CURLOPT_POSTFIELDS,data.c_str());
