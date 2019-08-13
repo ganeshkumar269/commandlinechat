@@ -83,7 +83,7 @@ CURLcode getMessages(std::string username){
     std::string finalURL = URL+"getMessages";
     std::string data = "username="+username;
     std::string token = getToken();
-    std::string header = "Authorization: "+token;
+    std::string header = "Authorization: Bearer"+token;
     chunk = curl_slist_append(chunk,header.c_str());
     curl_easy_setopt(curl,CURLOPT_URL,finalURL);curl_easy_setopt(curl,CURLOPT_POSTFIELDS,data.c_str());
     curl_easy_setopt(curl,CURLOPT_HTTPHEADER,chunk);
