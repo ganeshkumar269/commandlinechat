@@ -4,12 +4,17 @@
 #include <fstream>
 #include <cstring>
 #define MAX 400
-std::string URL("http://localhost:3000/api/v1/");
-size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata){
+std::string URL("http://node-server-clc.herokuapp.com/api/v1/");
+size_t login_callback(char *ptr, size_t size, size_t nmemb, void *userdata){
     std::ofstream fout("token.bin",std::ios::binary);
     std::cout<<"Token Recieved: "<<ptr<<std::endl;
     fout<<ptr<<std::endl;
     fout.close();
+    return strlen(ptr);
+}
+
+size_t g_callback(char* ptr,size_t size,size_t nmemb, void *userdata){
+    std::cout<<ptr<<std::endl;
     return strlen(ptr);
 }
 
@@ -69,7 +74,7 @@ CURLcode login(std::string username,std::string password){
     curl_easy_setopt(curl,CURLOPT_POSTFIELDS,data.c_str());
     curl_easy_setopt(curl,CURLOPT_URL,finalURL.c_str());
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,userdata);
-    curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,write_callback);
+    curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,login_callback);
     result = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
     return result;
@@ -80,13 +85,17 @@ CURLcode getMessages(std::string username){
     curl = curl_easy_init();
     CURLcode result;
     curl_slist *chunk = NULL;
+    char* userdata;
     std::string finalURL = URL+"getMessages";
-    std::string data = "username="+username;
+    std::string data = "?username="+username;
+    finalURL+=data;
     std::string token = getToken();
-    std::string header = "Authorization: Bearer"+token;
+    std::string header = "Authorization: Bearer "+token;
     chunk = curl_slist_append(chunk,header.c_str());
-    curl_easy_setopt(curl,CURLOPT_URL,finalURL);curl_easy_setopt(curl,CURLOPT_POSTFIELDS,data.c_str());
+    curl_easy_setopt(curl,CURLOPT_URL,finalURL.c_str());
     curl_easy_setopt(curl,CURLOPT_HTTPHEADER,chunk);
+    curl_easy_setopt(curl,CURLOPT_WRITEDATA,userdata);
+    curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,g_callback);
     result = curl_easy_perform(curl);
     return result;
 }
