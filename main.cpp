@@ -8,6 +8,7 @@ enum commandList {
         cmd_login,
         cmd_sendMessage,
         cmd_getMessages,
+        cmd_ping,
         cmd_invalid
 };
 commandList hashIt(std::string const& cmd){
@@ -15,6 +16,7 @@ commandList hashIt(std::string const& cmd){
     if(cmd == "login")  return cmd_login;
     if(cmd == "m")      return cmd_sendMessage;
     if(cmd == "g")      return cmd_getMessages;
+    if(cmd == "ping")   return cmd_ping;
     else                return cmd_invalid;
 }
 int main(void)
@@ -39,18 +41,30 @@ int main(void)
                             printf("\nLogin Successful");
                         break;
     case cmd_sendMessage:
-                        res = sendMessage(tokens.first[1],tokens.first[2]);
-                        if(res != CURLE_OK)
-                          fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
-                        else
-                            printf("\nSuccessfully sent the message");
-                        break;
+                        {
+                            std::string message;
+                            for(int i = 2 ; i < tokens.first.size(); i++)
+                                    message += tokens.first[i]+" ";
+                            res = sendMessage(tokens.first[1],message);
+                            if(res != CURLE_OK)
+                                fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+                            else
+                                printf("\nSuccessfully sent the message");
+                            break;
+                        }
     case cmd_getMessages:
                         res = getMessages(tokens.first[1]);
                         if(res != CURLE_OK)
                           fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
                         else
                             printf("\nSuccessfully sent the message");
+                        break;
+    case cmd_ping       :
+                        res = ping(tokens.first[1]);
+                        if(res != CURLE_OK)
+                            fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+                        else
+                            printf("\nSuccessfully pinged %s",tokens.first[1]);
                         break;
     case cmd_invalid    :
                         printf("\nInvalid Command Entered");
