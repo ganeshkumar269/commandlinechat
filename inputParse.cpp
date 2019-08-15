@@ -1,8 +1,4 @@
 #include "functions.h"
-#include <string>
-#include <iostream>
-#include <vector>
-#include <utility>
 
 enum statusCode {
     OKAY,

@@ -1,9 +1,8 @@
 # depslib dependency file v1.0
-1565541973 source:d:\codeblocks\testingcurl\main.cpp
+1565787409 source:d:\codeblocks\testingcurl\main.cpp
 	<stdio.h>
 	<curl/curl.h>
 	"functions.h"
-	<curl/curlbuild.h>
 	<utility>
 
 1415105476 c:\curl-7.39.0\include\curl\curl.h
@@ -40,24 +39,29 @@
 
 1415105476 c:\curl-7.39.0\include\curl\typecheck-gcc.h
 
-1565549345 source:d:\codeblocks\testingcurl\functions.cpp
+1565786902 source:d:\codeblocks\testingcurl\functions.cpp
 	"functions.h"
-	<curl/curl.h>
-	<iostream>
-	<fstream>
-	<cstring>
 
-1565541027 d:\codeblocks\testingcurl\functions.h
+1565786822 d:\codeblocks\testingcurl\functions.h
 	<curl/curl.h>
 	<string.h>
 	<iostream>
 	<vector>
 	<utility>
+	<fstream>
+	<cstring>
 
-1565541908 source:d:\codeblocks\testingcurl\verify.cpp
+1565550262 source:d:\codeblocks\testingcurl\verify.cpp
 	"functions.h"
 	<string>
 	<iostream>
 	<vector>
 	<utility>
+
+1565783159 source:d:\codeblocks\testingcurl\inputparse.cpp
+	"functions.h"
+
+1565783226 source:d:\codeblocks\testingcurl\getmessages.cpp
+	"functions.h"
+	<iostream>
 

@@ -39,8 +39,8 @@
 		</Linker>
 		<Unit filename="functions.cpp" />
 		<Unit filename="functions.h" />
+		<Unit filename="inputParse.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="verify.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
