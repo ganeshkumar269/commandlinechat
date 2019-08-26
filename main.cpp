@@ -53,7 +53,7 @@ int main(int argc,char* argv[])
     case cmd_sendMessage:
                         {
                             std::string message;
-                            for(int i = 2 ; i < tokens.first.size(); i++)
+                            for(unsigned int i = 2 ; i < tokens.first.size(); i++)
                                     message += tokens.first[i]+" ";
                             res = sendMessage(tokens.first[1],message);
                             if(res != CURLE_OK)
@@ -74,7 +74,7 @@ int main(int argc,char* argv[])
                         if(res != CURLE_OK)
                             fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
                         else
-                            printf("\nSuccessfully pinged %s",tokens.first[1]);
+                            printf("\nSuccessfully pinged %s",tokens.first[1].c_str());
                         break;
     case cmd_invalid    :
                         printf("\nInvalid Command Entered");

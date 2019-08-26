@@ -19,6 +19,7 @@ size_t getMessages_callback(char* ptr,size_t size,size_t nmemb, void *userdata){
 
 std::string getToken(){
     char token[200];
+    std::string token_string("");
     std::ifstream fin("d:\\codeblocks\\testingCURL\\token.bin",std::ios::binary);
     if(!fin) std::cout<<"Error occured in opening token"<<std::endl;
     else{
@@ -27,9 +28,9 @@ std::string getToken(){
         fin.seekg(0,std::ios::beg);
         fin.getline(token,n);
         fin.close();
-        std::string token_string(token);
-        return token_string;
+        token_string = token;
     }
+    return token_string;
 }
 CURLcode sendMessage(std::string username,std::string message){
         printf("\nSendMessage route initiated");
@@ -73,7 +74,7 @@ CURLcode login(std::string username,std::string password){
     CURL *curl;
     curl = curl_easy_init();
     CURLcode result;
-    char* userdata;
+    char* userdata=NULL;
     if(username.length() == 0){
         std::cout<<"\nEnter UserName:";
         std::getline(std::cin,username);
@@ -98,7 +99,7 @@ CURLcode getMessages(std::string username){
     curl = curl_easy_init();
     CURLcode result;
     curl_slist *chunk = NULL;
-    char* userdata;
+    char* userdata=NULL;
     std::string finalURL = URL+"getMessages/";
     std::string data = "?username="+username;
     finalURL+=data;
