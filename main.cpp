@@ -1,44 +1,84 @@
-#include <iostream>
+#include <stdio.h>
 #include <curl/curl.h>
-#include <cstring>
-#include <fstream>
-#include <iomanip>
-#define MAX 100
-using namespace std;
-size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata){
-    ofstream fout("token2.txt");
-    string data(ptr);
-    cout<<"String: "<<data<<endl;
-    fout.write(reinterpret_cast<char*>(&data),MAX*sizeof(char));
-    fout.close();
-    ifstream fin("token2.txt");
-    fin.read(reinterpret_cast<char*>(&data),MAX*sizeof(char));
-    cout<<"Read String: "<<data<<endl;
-    fin.close();
-    return strlen(ptr);
-}
+#include "functions.h"
+#include <utility>
 
-string readthestring(){
-    ifstream fin("token2.txt");
-    string data;
-    fin.read(reinterpret_cast<char*>(&data),MAX*sizeof(char));
-    cout<<data<<endl;
-    fin.close();
-    data = data+"\0";
-    return data;
+enum commandList {
+        cmd_create,
+        cmd_login,
+        cmd_sendMessage,
+        cmd_getMessages,
+        cmd_ping,
+        cmd_invalid
+};
+commandList hashIt(std::string const& cmd){
+    if(cmd == "create") return cmd_create;
+    if(cmd == "login")  return cmd_login;
+    if(cmd == "m")      return cmd_sendMessage;
+    if(cmd == "g")      return cmd_getMessages;
+    if(cmd == "ping")   return cmd_ping;
+    else                return cmd_invalid;
 }
-
-int main(){
-    CURL *curl;
-    curl = curl_easy_init();
-    char* data;
-    curl_easy_setopt(curl,CURLOPT_URL,"http://localhost:8008/");
-    curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,write_callback);
-    curl_easy_setopt(curl,CURLOPT_WRITEDATA,data);
-    CURLcode res = curl_easy_perform(curl);
-    fprintf(stderr,"%s",curl_easy_strerror(res));
-    cout<<res<<endl;
-    cout<<readthestring()<<endl;
-    curl_easy_cleanup(curl);
-    return 0;
+int main(int argc,char* argv[])
+{
+    std::string input;
+    std::pair<std::vector<std::string>,int> tokens;
+    if(argc == 1){
+            std::getline(std::cin,input);
+            tokens = inputParse(input);
+    }
+    else    for(int i =1;i < argc; ++i) tokens.first.push_back(argv[i]);
+    CURLcode res;
+    switch(hashIt(tokens.first[0])) {
+    case cmd_create     :
+                        res = create(tokens.first[1],tokens.first[2]);
+                        if(res != CURLE_OK)
+                          fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+                        else
+                            printf("\nSuccessfully created account");
+                        break;
+    case cmd_login      :
+                        {
+                        std::string u(""),p("");
+                        if(tokens.first.size() == 1)
+                            res = login(u,p);
+                        else
+                            res = login(tokens.first[1],tokens.first[2]);
+                        if(res != CURLE_OK)
+                            fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+                        else
+                            printf("\nLogin Successful");
+                        break;
+                        }
+    case cmd_sendMessage:
+                        {
+                            std::string message;
+                            for(int i = 2 ; i < tokens.first.size(); i++)
+                                    message += tokens.first[i]+" ";
+                            res = sendMessage(tokens.first[1],message);
+                            if(res != CURLE_OK)
+                                fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+                            else
+                                printf("\nSuccessfully sent the message");
+                            break;
+                        }
+    case cmd_getMessages:
+                        res = getMessages(tokens.first[1]);
+                        if(res != CURLE_OK)
+                          fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+                        else
+                            printf("\nSuccessfully sent the message");
+                        break;
+    case cmd_ping       :
+                        res = ping(tokens.first[1]);
+                        if(res != CURLE_OK)
+                            fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+                        else
+                            printf("\nSuccessfully pinged %s",tokens.first[1]);
+                        break;
+    case cmd_invalid    :
+                        printf("\nInvalid Command Entered");
+                        break;
+    }
+    std::cin.get();
 }

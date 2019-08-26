@@ -1,10 +1,14 @@
 #include "functions.h"
 std::string URL("http://node-server-clc.herokuapp.com/api/v1/");
+//std::string URL("http://localhost:3000/api/v1/");
 size_t login_callback(char *ptr, size_t size, size_t nmemb, void *userdata){
-    std::ofstream fout("token.bin",std::ios::binary);
-    std::cout<<"Token Recieved: "<<ptr<<std::endl;
-    fout<<ptr<<std::endl;
-    fout.close();
+    std::ofstream fout("d:\\codeblocks\\testingCURL\\token.bin",std::ios::binary);
+    if(!fout) std::cout<<"Error occured in opening file"<<std::endl;
+    else{
+        std::cout<<"Token Recieved: "<<ptr<<std::endl;
+        fout<<ptr<<std::endl;
+        fout.close();
+    }
     return strlen(ptr);
 }
 
@@ -15,14 +19,17 @@ size_t getMessages_callback(char* ptr,size_t size,size_t nmemb, void *userdata){
 
 std::string getToken(){
     char token[200];
-    std::ifstream fin("token.bin",std::ios::binary);
-    fin.seekg(0,std::ios::end);
-    int n = fin.tellg();
-    fin.seekg(0,std::ios::beg);
-    fin.getline(token,n);
-    fin.close();
-    std::string token_string(token);
-    return token_string;
+    std::ifstream fin("d:\\codeblocks\\testingCURL\\token.bin",std::ios::binary);
+    if(!fin) std::cout<<"Error occured in opening token"<<std::endl;
+    else{
+        fin.seekg(0,std::ios::end);
+        int n = fin.tellg();
+        fin.seekg(0,std::ios::beg);
+        fin.getline(token,n);
+        fin.close();
+        std::string token_string(token);
+        return token_string;
+    }
 }
 CURLcode sendMessage(std::string username,std::string message){
         printf("\nSendMessage route initiated");
@@ -39,6 +46,7 @@ CURLcode sendMessage(std::string username,std::string message){
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
         curl_easy_setopt(curl, CURLOPT_URL, finalURL.c_str());
         curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+        curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
         curl_easy_setopt(curl,CURLOPT_HTTPHEADER,chunk);
         result = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
@@ -54,6 +62,8 @@ CURLcode create(std::string username,std::string password){
     std::string data = "username="+username+"&password="+password;
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
     curl_easy_setopt(curl, CURLOPT_URL, finalURL.c_str());
+    curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+    curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
     return result;
@@ -64,12 +74,20 @@ CURLcode login(std::string username,std::string password){
     curl = curl_easy_init();
     CURLcode result;
     char* userdata;
+    if(username.length() == 0){
+        std::cout<<"\nEnter UserName:";
+        std::getline(std::cin,username);
+        std::cout<<"\nEnter Password:";
+        std::getline(std::cin,password);
+    }
     std::string finalURL = URL + "login";
     std::string data = "username="+username+"&password="+password;
     curl_easy_setopt(curl,CURLOPT_POSTFIELDS,data.c_str());
     curl_easy_setopt(curl,CURLOPT_URL,finalURL.c_str());
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,userdata);
     curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,login_callback);
+    curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+    curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
     return result;
@@ -81,7 +99,7 @@ CURLcode getMessages(std::string username){
     CURLcode result;
     curl_slist *chunk = NULL;
     char* userdata;
-    std::string finalURL = URL+"getMessages";
+    std::string finalURL = URL+"getMessages/";
     std::string data = "?username="+username;
     finalURL+=data;
     std::string token = getToken();
@@ -91,6 +109,8 @@ CURLcode getMessages(std::string username){
     curl_easy_setopt(curl,CURLOPT_HTTPHEADER,chunk);
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,userdata);
     curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,getMessages_callback);
+    curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+    curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result = curl_easy_perform(curl);
     return result;
 }
@@ -100,7 +120,7 @@ CURLcode ping(std::string username){
     curl = curl_easy_init();
     CURLcode result;
     curl_slist *chunk = NULL;
-    std::string finalURL = URL+"ping";
+    std::string finalURL = URL+"ping/";
     std::string data = "?username="+username;
     finalURL+=data;
     std::string token = getToken();
@@ -108,6 +128,8 @@ CURLcode ping(std::string username){
     chunk = curl_slist_append(chunk,header.c_str());
     curl_easy_setopt(curl,CURLOPT_URL,finalURL.c_str());
     curl_easy_setopt(curl,CURLOPT_HTTPHEADER,chunk);
+    curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+    curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result = curl_easy_perform(curl);
     return result;
 }
