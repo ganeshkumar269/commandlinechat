@@ -4,25 +4,25 @@ A simple chat application that works from your commandline!
 
 # Commands:
 
-create - to create an account
+**create** - to create an account
 
 **Eg.**
 
 > cls create username password
 
-login - login to your account
+**login** - login to your account
 
 **Eg.** 
 
 > cls login username password
 
-m - send a message
+**m** - send a message
 
 **Eg.**
 
 > cls m recieversUsername message-body
 
-g - fetch messages
+**g** - fetch messages
 
 **Eg.**
 
