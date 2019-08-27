@@ -15,8 +15,8 @@ m - send a message
 > cls m recieversUsername message-body
 g - fetch messages
 **Eg.**
-> cls g username
-fetches messages sent by username
+> cls g username \n
+fetches messages sent by username \n
 ping - pings/notifies a user
 **Eg.**
 > cls ping username
