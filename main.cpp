@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdio.h>
-#include "./dependencies/curl/curl.h"
+#include "curl/curl.h"
 #include "functions.h"
 #include <utility>
 enum statusCode {
