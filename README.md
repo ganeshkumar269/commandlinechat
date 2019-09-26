@@ -30,7 +30,7 @@ A simple chat application that works from your commandline!
 
 fetches messages sent by username
 
-ping - pings/notifies a user
+**ping** - pings/notifies a user
 
 **Eg.**
 

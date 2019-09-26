@@ -1,7 +1,13 @@
+#include <iostream>
 #include <stdio.h>
-#include <curl/curl.h>
+#include "./dependencies/curl/curl.h"
 #include "functions.h"
 #include <utility>
+enum statusCode {
+    OK,
+    NO_CMD_FND,
+    INV_INP
+};
 
 enum commandList {
         cmd_create,
@@ -20,15 +26,30 @@ commandList hashIt(std::string const& cmd){
     else                return cmd_invalid;
 }
 int main(int argc,char* argv[])
-{
+{   
+    CURLcode res;
     std::string input;
     std::pair<std::vector<std::string>,int> tokens;
     if(argc == 1){
             std::getline(std::cin,input);
             tokens = inputParse(input);
+            if(tokens.second == NO_CMD_FND) {
+                std::cout<<"No Command Found. Type -help for help."<<std::endl;
+                return 0;
+            }
+            else if(tokens.second == INV_INP) {
+                std::cout<<"Invalid Input. Type -help for help."<<std::endl;
+                return 0;
+            }
     }
-    else    for(int i =1;i < argc; ++i) tokens.first.push_back(argv[i]);
-    CURLcode res;
+    else    
+        for(int i =1;i < argc; ++i) 
+            tokens.first.push_back(argv[i]);
+    // for(std::vector<std::string>::iterator it = tokens.first.begin(); it != tokens.first.end(); ++it){
+    //     if(it[0])
+    // }
+    for(std::string &i : tokens.first)
+        std::cout<<i<<std::endl;
     switch(hashIt(tokens.first[0])) {
     case cmd_create     :
                         res = create(tokens.first[1],tokens.first[2]);
