@@ -3,6 +3,7 @@
 #include "curl/curl.h"
 #include "functions.h"
 #include <utility>
+
 enum statusCode {
     OK,
     NO_CMD_FND,
@@ -15,6 +16,8 @@ enum commandList {
         cmd_sendMessage,
         cmd_getMessages,
         cmd_ping,
+        cmd_chkspd,
+        cmd_fileupload,
         cmd_invalid
 };
 commandList hashIt(std::string const& cmd){
@@ -23,6 +26,8 @@ commandList hashIt(std::string const& cmd){
     if(cmd == "m")      return cmd_sendMessage;
     if(cmd == "g")      return cmd_getMessages;
     if(cmd == "ping")   return cmd_ping;
+    if(cmd == "checkspeed") return cmd_chkspd;
+    if(cmd == "fileupload") return cmd_fileupload;
     else                return cmd_invalid;
 }
 int main(int argc,char* argv[])
@@ -96,6 +101,15 @@ int main(int argc,char* argv[])
                             fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
                         else
                             printf("\nSuccessfully pinged %s",tokens.first[1].c_str());
+                        break;
+    case cmd_fileupload:{
+                        char* name = "makefile";
+                        fileupload(argv[2]);
+                        break;
+                        }
+
+    case cmd_chkspd     :
+                        check_speed(1,argv);
                         break;
     case cmd_invalid    :
                         printf("\nInvalid Command Entered");
