@@ -1,12 +1,9 @@
 #include "functions.h"
 
-
-
-
 std::string getToken(){
     char token[200];
     std::string token_string("");
-    std::ifstream fin("token.bin",std::ios::binary);
+    std::ifstream fin("token");
     if(!fin) std::cout<<"Error occured in opening token"<<std::endl;
     else{
         fin.seekg(0,std::ios::end);

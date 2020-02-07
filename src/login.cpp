@@ -1,11 +1,20 @@
 #include "functions.h"
-
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 size_t login_callback(char *ptr, size_t size, size_t nmemb, void *userdata){
-    std::ofstream fout("token.bin",std::ios::binary);
+    std::ofstream fout("token");
     if(!fout) std::cout<<"Error occured in token"<<std::endl;
     else{
+        rapidjson::Document d;
+        d.Parse(ptr);
+        rapidjson::Value& token = d["token"]; 
+        std::cout<<"Extracted token:" << token.GetString() << std::endl;     
+        std::string token_string = token.GetString();
+        token_string = token_string.substr(token_string.find(' ')+1);
+        std::cout<<"After trimmed: " << token_string << std::endl;
         std::cout<<"Token Recieved: "<<ptr<<std::endl;
-        fout<<ptr<<std::endl;
+        fout<<token_string.c_str()<<std::endl;
         fout.close();
     }
     return strlen(ptr);

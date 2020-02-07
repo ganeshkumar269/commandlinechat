@@ -1,7 +1,6 @@
 #include "functions.h"
 
-
-CURLcode sendMessage(std::string username,std::string message){
+CURLcode sendMessage(std::string convId,std::string message){
         printf("\nSendMessage route initiated");
         CURL *curl;
         curl = curl_easy_init();
@@ -12,7 +11,7 @@ CURLcode sendMessage(std::string username,std::string message){
         struct curl_slist *chunk = NULL;
         chunk = curl_slist_append(chunk,header.c_str());
         std::string finalURL = URL + "sendMessage";
-        std::string data = "username="+username+"&message="+message;
+        std::string data = "username="+convId+"&message="+message;
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
         curl_easy_setopt(curl, CURLOPT_URL, finalURL.c_str());
         curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);

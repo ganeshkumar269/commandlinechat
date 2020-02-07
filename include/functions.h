@@ -13,18 +13,14 @@
     CURLcode getMessages(std::string);
     CURLcode ping(std::string);
     std::string getToken();
-    std::pair<std::vector<std::string>,int> inputParse(std::string);
-    int check_speed(int,char**);
-    int fileupload(char*);
-
-
+    std::vector<std::string> inputParse(std::string);
 
     enum statusCode {
         OK,
         NO_CMD_FND,
         INV_INP
     };
-    std::string URL("http://node-server-t.herokuapp.com/api/v1/");
+    const std::string URL("http://node-server-t.herokuapp.com/api/v1/");
 
     //status code: 0 - everything okay
     //             1 - no cmd found
