@@ -32,8 +32,8 @@ int main(int argc,char* argv[])
     else    
         for(int i =1;i < argc; ++i) 
             tokens.push_back(argv[i]);
-    for(std::string &i : tokens)
-        std::cout<<i<<std::endl;
+    // for(std::string &i : tokens)
+    //     std::cout<<i<<std::endl;
     switch(hashIt(tokens[0])) {
     case cmd_create     :
                         res = create(tokens[1],tokens[2]);

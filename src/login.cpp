@@ -37,7 +37,7 @@ CURLcode login(std::string username,std::string password){
     curl_easy_setopt(curl,CURLOPT_URL,finalURL.c_str());
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,userdata);
     curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,login_callback);
-    curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+    // curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
     curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result = curl_easy_perform(curl);
     curl_easy_cleanup(curl);

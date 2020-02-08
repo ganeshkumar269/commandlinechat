@@ -10,10 +10,10 @@ using namespace rapidjson;
 size_t getMessages_callback(char* ptr,size_t size,size_t nmemb, void *userdata){
     Document document;
     document.Parse(ptr);
-    if(document.HasMember("data")){
+    if(document.IsObject() and document.HasMember("data")){
         Value& messages = document["data"]["messages"];
-        for ( int i = 0; i <  messages.Size(); i++){
-            cout << i <<". userId:" << messages[i]["userId"].GetString();
+        for ( uint32_t i = 0; i <  messages.Size(); i++){
+            cout << i <<". userId:" << messages[i]["userId"].GetString()<< " ";
             cout << messages[i]["body"].GetString() << endl;
         }
     }else
@@ -40,7 +40,7 @@ CURLcode getMessages(std::string convId){
     curl_easy_setopt(curl,CURLOPT_HTTPHEADER,chunk);
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,userdata);
     curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,getMessages_callback);
-    curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+    // curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
     curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result = curl_easy_perform(curl);
     return result;

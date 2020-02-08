@@ -14,7 +14,7 @@ CURLcode ping(std::string username){
     chunk = curl_slist_append(chunk,header.c_str());
     curl_easy_setopt(curl,CURLOPT_URL,finalURL.c_str());
     curl_easy_setopt(curl,CURLOPT_HTTPHEADER,chunk);
-    curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+    // curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
     curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result = curl_easy_perform(curl);
     return result;
