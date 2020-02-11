@@ -8,25 +8,25 @@ A simple chat application that works from your commandline!
 
 **Eg.**
 
-> clc create username password
+> ppc create username password
 
 **login** - login to your account
 
 **Eg.** 
 
-> clc login username password
+> ppc login username password
 
 **m** - send a message
 
 **Eg.**
 
-> clc m recieversUsername message-body
+> ppc m recieversUsername message-body
 
 **g** - fetch messages
 
 **Eg.**
 
-> clc g username
+> ppc g username
 
 fetches messages sent by username
 
@@ -34,7 +34,7 @@ fetches messages sent by username
 
 **Eg.**
 
-> clc ping username
+> ppc ping username
 
 pings the user "username"
 

@@ -8,14 +8,16 @@ size_t login_callback(char *ptr, size_t size, size_t nmemb, void *userdata){
     else{
         rapidjson::Document d;
         d.Parse(ptr);
-        rapidjson::Value& token = d["token"]; 
-        std::cout<<"Extracted token:" << token.GetString() << std::endl;     
-        std::string token_string = token.GetString();
-        token_string = token_string.substr(token_string.find(' ')+1);
-        std::cout<<"After trimmed: " << token_string << std::endl;
-        std::cout<<"Token Recieved: "<<ptr<<std::endl;
-        fout<<token_string.c_str()<<std::endl;
-        fout.close();
+        if(d.IsObject() and d.HasMember("token")){
+            rapidjson::Value& token = d["token"]; 
+            std::string token_string = token.GetString();
+            token_string = token_string.substr(token_string.find(' ')+1);
+            fout<<token_string.c_str()<<std::endl;
+            fout.close();
+        } else {
+            std::cout << "login.cpp : Failed to save token , ptr is not a valid json" << std::endl;    
+            std::cout << "login.cpp : ptr "  << *ptr <<std::endl;
+        }
     }
     return strlen(ptr);
 }

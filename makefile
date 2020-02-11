@@ -5,7 +5,7 @@ LOCAL_INCLUDE_DIR = -I./include
 
 
 all: main.o getMessages.o create.o login.o ping.o inputParse.o sendMessage.o
-	mingw32-g++.exe -Wall -std=c++14 -DCURL_STATICLIB ./obj/main.o ./obj/getToken.o ./obj/sendMessage.o ./obj/create.o ./obj/getMessages.o ./obj/login.o ./obj/ping.o ./obj/inputParse.o -o ./bin/clc.exe $(LIB_DIR) $(LIBS)
+	mingw32-g++.exe -Wall -std=c++14 -DCURL_STATICLIB ./obj/main.o ./obj/getToken.o ./obj/sendMessage.o ./obj/create.o ./obj/getMessages.o ./obj/login.o ./obj/ping.o ./obj/inputParse.o -o ./bin/ppc.exe $(LIB_DIR) $(LIBS)
 main.o:
 	mingw32-g++.exe -c -Wall -std=c++14 -DCURL_STATICLIB main.cpp -o ./obj/main.o $(INCLUDE_DIR) $(LOCAL_INCLUDE_DIR)
 inputParse.o:
