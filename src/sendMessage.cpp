@@ -1,4 +1,6 @@
-#include "functions.h"
+#include "functions.hpp"
+#include <cstring>
+
 
 CURLcode sendMessage(std::string convId,std::string message){
         printf("\nSendMessage route initiated");

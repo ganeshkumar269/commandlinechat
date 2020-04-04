@@ -1,4 +1,6 @@
-#include "functions.h"
+#include "functions.hpp"
+#include <string>
+#include <vector>
 using namespace std;
 
 std::vector<std::string> inputParse(std::string  input){

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include "curl/curl.h"
-#include "functions.h"
+#include "functions.hpp"
 #include <utility>
 
 enum commandList {

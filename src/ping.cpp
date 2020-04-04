@@ -1,4 +1,5 @@
-#include "functions.h"
+#include "functions.hpp"
+#include <string>
 
 
 CURLcode ping(std::string username){

@@ -1,9 +1,12 @@
-#include "functions.h"
+#include "functions.hpp"
+#include <string>
+#include <iostream>
+#include <fstream>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 size_t login_callback(char *ptr, size_t size, size_t nmemb, void *userdata){
-    std::ofstream fout("token");
+    std::ofstream fout("token.txt");
     if(!fout) std::cout<<"Error occured in token"<<std::endl;
     else{
         rapidjson::Document d;

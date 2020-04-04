@@ -1,9 +1,12 @@
-#include "functions.h"
+#include "functions.hpp"
+#include <string>
+#include <fstream>
+#include <iostream>
 
 std::string getToken(){
     char token[200];
     std::string token_string("");
-    std::ifstream fin("token");
+    std::ifstream fin("token.txt");
     if(!fin) std::cout<<"Error occured in opening token"<<std::endl;
     else{
         fin.seekg(0,std::ios::end);

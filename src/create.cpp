@@ -1,4 +1,6 @@
-#include "functions.h"
+#include "functions.hpp"
+#include <string>
+#include <curl/curl.h>
 
 CURLcode create(std::string username,std::string password){
     CURL *curl;

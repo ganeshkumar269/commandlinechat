@@ -1,12 +1,8 @@
+#include <vector>
+#include <string>
+#include <curl/curl.h>
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
-    #include <curl/curl.h>
-    #include <string.h>
-    #include <iostream>
-    #include <vector>
-    #include <utility>
-    #include <fstream>
-    #include <cstring>
     CURLcode sendMessage(std::string,std::string);
     CURLcode create(std::string,std::string);
     CURLcode login(std::string,std::string);
